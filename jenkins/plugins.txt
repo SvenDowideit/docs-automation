@@ -1,0 +1,8 @@
+disk-usage:0.25
+notification:1.9
+mailer
+ssh-credentials
+git-client
+scm-api
+matrix-project
+git
