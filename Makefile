@@ -5,8 +5,16 @@ run: build jenkins-volume docker-volume
 		--volumes-from jenkins-volume \
 		--volumes-from docker-volume \
    			docs-jenkins
+	sleep 6
+	docker exec -t jenkins-master tar -C /var/jenkins_home/jobs/ -xvf /var/jenkins_home/leeroy.tar
+	# Can't use the jenkins-cli unless I know the user/pass/token
+	# java -jar /var/jenkins_home/war/WEB-INF/jenkins-cli.jar -s http://localhost:8080/ safe-restart
 
-build: build-jenkins build-docker
+leeroy: build-leeroy
+	docker run --rm -it -p 80:80 --link jenkins-master \
+		docs-leeroy -d
+
+build: build-jenkins build-docker build-leeroy
 
 logs:
 	docker logs -f jenkins-master
@@ -18,10 +26,11 @@ stop:
 	docker stop jenkins-master
 
 clean:
-	docker rm -vf jenkins-master
+	docker rm -vf jenkins-master || true
 
 realclean: clean
-	docker rm -vf jenkins-volume
+	docker rm -vf jenkins-volume || true
+	docker rmi -f docs-jenkins
 
 # persist the config
 jenkins-volume:
@@ -43,3 +52,6 @@ build-jenkins:
 
 build-docker:
 	docker build -t docker-client docker/
+
+build-leeroy:
+	docker build -t docs-leeroy leeroy/

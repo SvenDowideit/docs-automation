@@ -1,0 +1,19 @@
+{
+    "jenkins": {
+        "username": "leeroy",
+        "token": "YOUR_JENKINS_API_TOKEN",
+        "base_url": "https://jenkins.dockerproject.com"
+    },
+    "build_commits": "last",
+    "github_token": "YOUR_GITHUB_TOKEN",
+    "github_user":  "GITHUB_USER_FOR_ABOVE_TOKEN",
+    "builds": [
+        {
+            "github_repo": "docker/docker",
+            "jenkins_job_name": "Docker-PRs",
+            "context": "janky"
+        }
+    ],
+    "user": "USER",
+    "pass": "PASS"
+}

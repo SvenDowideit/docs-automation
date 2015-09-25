@@ -2,6 +2,18 @@ FROM jenkins
 MAINTAINER Sven Dowideit <SvenDowideit@docker.com>
 
 VOLUME /var/jenkins_home
+
+COPY config.xml /var/jenkins_home/
+
+RUN mkdir -p /var/jenkins_home/users/svendowideit/
+COPY svendowideit.xml /var/jenkins_home/users/svendowideit/config.xml
+
+# use the full tar file
+COPY leeroy.tar /var/jenkins_home/
+RUN mkdir -p /var/jenkins_home/jobs/ \
+	&& cd /var/jenkins_home/jobs/ \
+	&& tar xvf ../leeroy.tar
+
 USER root
 
 ENV JAVA_OPTS="-Xmx8192m"

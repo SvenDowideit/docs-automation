@@ -28,4 +28,7 @@ if ! id -nG "$JUSER" | grep -qw "$DOCKER_GROUP"; then
 	adduser $JUSER $DOCKER_GROUP
 fi
 
+# TODO: work out why this happens intermittently
+chown -R $JUSER:$JUSER /var/jenkins_home/
+
 exec su $JUSER -c "/bin/tini -- /usr/local/bin/jenkins.sh"
