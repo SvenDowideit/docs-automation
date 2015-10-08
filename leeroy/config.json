@@ -1,17 +1,22 @@
 {
     "jenkins": {
         "username": "leeroy",
-        "token": "YOUR_JENKINS_API_TOKEN",
-        "base_url": "https://jenkins.dockerproject.com"
+        "token": "",
+        "base_url": "http://ec2-52-27-210-171.us-west-2.compute.amazonaws.com:8080"
     },
     "build_commits": "last",
-    "github_token": "YOUR_GITHUB_TOKEN",
-    "github_user":  "GITHUB_USER_FOR_ABOVE_TOKEN",
+    "github_token": "SECRET!",
+    "github_user":  "NooneWeKnow",
     "builds": [
         {
-            "github_repo": "docker/docker",
-            "jenkins_job_name": "Docker-PRs",
-            "context": "janky"
+            "github_repo": "docker/tutorials",
+            "jenkins_job_name": "test",
+            "context": "hugo14"
+        },
+        {
+            "github_repo": "docker/tutorials",
+            "jenkins_job_name": "hugo15",
+            "context": "hugo15"
         }
     ],
     "user": "USER",

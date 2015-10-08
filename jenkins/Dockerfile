@@ -17,7 +17,7 @@ RUN mkdir -p /var/jenkins_home/jobs/ \
 USER root
 
 ENV JAVA_OPTS="-Xmx8192m"
-ENV JENKINS_OPTS="--handlerCountStartup=100 --handlerCountMax=300"
+ENV JENKINS_OPTS="--handlerCountStartup=100 --handlerCountMax=300 --debug=9"
 
 COPY plugins.txt /usr/share/jenkins/plugins.txt
 RUN /usr/local/bin/plugins.sh /usr/share/jenkins/plugins.txt

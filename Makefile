@@ -11,10 +11,32 @@ run: build jenkins-volume docker-volume
 	# java -jar /var/jenkins_home/war/WEB-INF/jenkins-cli.jar -s http://localhost:8080/ safe-restart
 
 leeroy: build-leeroy
-	docker run --rm -it -p 80:80 --link jenkins-master \
+	docker rm -vf leeroy || true
+	docker run -d -it -p 80:80 --link jenkins-master \
+		--name leeroy \
 		docs-leeroy -d
+	docker logs -f leeroy
 
 build: build-jenkins build-docker build-leeroy
+
+hub:
+	docker inspect docker-volume > /dev/null \
+		|| docker run --name docker-volume \
+			-v /var/run/docker.sock:/var/run/docker.sock \
+			docs/docker version
+	docker inspect jenkins-volume > /dev/null \
+		|| docker run -v /var/jenkins_home \
+			--user=jenkins \
+			--entrypoint=true \
+			--name=jenkins-volume docs/jenkins
+	docker rm jenkins-master || true
+	docker run -d -p 8080:8080 --name=jenkins-master \
+		--volumes-from jenkins-volume \
+		--volumes-from docker-volume \
+			docs/jenkins
+	sleep 6
+	docker exec -t jenkins-master tar -C /var/jenkins_home/jobs/ -xvf /var/jenkins_home/leeroy.tar
+
 
 logs:
 	docker logs -f jenkins-master
