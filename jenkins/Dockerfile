@@ -1,6 +1,10 @@
 FROM jenkins
 MAINTAINER Sven Dowideit <SvenDowideit@docker.com>
 
+RUN apt-get update && apt-get install -yq make
+RUN curl -L https://github.com/docker/compose/releases/download/1.5.0rc1/docker-compose-`uname -s`-`uname -m` > /usr/local/bin/docker-compose
+RUN chmod +x /usr/local/bin/docker-compose
+
 VOLUME /var/jenkins_home
 
 COPY config.xml /var/jenkins_home/
